@@ -1,0 +1,25 @@
+<html xmlns:th = "http://www.thymeleaf.org"
+      xmlns:layout = "http://ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/main.html">
+
+    <div layout:fragment="admin_content">
+                    <div class="row">
+                        <div class="col-sm-6 offset-3">
+                            <form th:action="@{'/savecountry'}" method="post">
+                                <div class="form-group">
+                                    <input th:value="${country!=null?country.id:''}" type="hidden" id="custId" name="id">
+                                    <label th:text="#{label.name}"></label>
+                                    <input th:value="${country!=null?country.name:''}" type="text" class="form-control" name="country_name">
+                                </div>
+                                <div class="form-group">
+                                    <label th:text="#{label.code}"></label>
+                                    <input th:value="${country!=null?country.code:''}" type="text" class="form-control" name="country_code">
+                                </div>
+                                <div class="form-inline">
+                                     <input class="btn btn-success" type="submit" th:value="#{button.saveitem}">
+                                    <a class="btn btn-danger ml-auto" th:href="@{/deletecountry/{id}(id=${country.id})}" th:text="#{button.delete}"></a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+</html>

@@ -1,0 +1,73 @@
+<html xmlns:th = "http://www.thymeleaf.org"
+      xmlns:layout = "http://ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/mainAdmin.html">
+    <div layout:fragment="admin_content">
+                    <div class="row">
+                        <div class="col-8">
+                            <h1 th:text="#{label.category}"></h1>
+                        </div>
+                        <div class="col-4">
+                            <button type="button" class="btn float-right" style="background-color: #2e5f47; color: white" data-toggle="modal" data-target="#addCategory">
+                                <span th:text="#{label.add}"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th class="w-50" th:text="#{label.name}"></th>
+                            <th class="w-25" th:text="#{label.logoUrl}"></th>
+                            <th th:text="#{label.operations}"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="cat : ${categories}">
+                            <th scope="row" th:text="${cat.id}"></th>
+                            <td th:text="${cat.name}"></td>
+                            <td th:text="${cat.logoURL}"></td>
+                            <td>
+                                <a th:href="@{/editCategory/{id}(id=${cat.id})}" class="btn btn-info btn-sm" th:text="#{button.edit}"></a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+        <div class="modal fade" id="addCategory" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <form th:action="@{'/addcategory'}" method="post">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel" th:text="#{label.modalName}"></h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+
+                                <label th:text="#{label.name}">
+                                </label>
+                                <input type="text" class="form-control" name="category_name">
+                            </div>
+                            <div class="form-group">
+                                <label th:text="#{label.logoUrl}"></label>
+                                <input type="text" class="form-control" name="category_url">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" th:text="#{label.close}"></button>
+
+                            <button type="submit" class="btn btn-primary" th:text="#{label.add}"></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+                </div>
+
+
+            <!-- Modal -->
+
+
+
+
+</html>

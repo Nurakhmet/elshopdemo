@@ -1,0 +1,71 @@
+<html xmlns:th = "http://www.thymeleaf.org"
+      xmlns:layout = "http://ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/main.html">
+
+    <div layout:fragment="site_content">
+        <div class="row mt-4">
+            <div class="col-3" th:insert="~{layout/menuLeft}">
+            </div>
+                <div class="col-9">
+                    <div class="row">
+                        <div class="col-sm-6 offset-3">
+                            <form th:action="@{'/saveitems'}" method="post">
+                                <div class="form-group">
+                                    <input th:value="${item!=null?item.id:''}" type="hidden" id="custId" name="id">
+                                    <label th:text="#{label.name}"></label>
+                                    <input th:value="${item!=null?item.name:''}" type="text" class="form-control" name="item_name">
+                                </div>
+                                <div class="form-group">
+                                    <label th:text="#{label.description}"></label>
+                                    <input th:value="${item!=null?item.description:''}" type="text" class="form-control" name="item_description">
+                                </div>
+                                <div class="form-group">
+                                    <label th:text="#{label.price}"></label>
+                                    <input th:value="${item!=null?item.price:0}" type="text" class="form-control" name="item_price">
+                                </div>
+                                <div class="form-group">
+                                    <label th:text="#{label.largePicUrl}"></label>
+                                    <input th:value="${item!=null?item.largePicUrl:''}" type="text" class="form-control" name="item_large_pic_url">
+                                </div>
+                                <div class="form-group">
+                                    <label th:text="#{label.smallPicUrl}"></label>
+                                    <input th:value="${item!=null?item.smallPicUrl:''}" type="text" class="form-control" name="item_small_pic_url">
+                                </div>
+                                <div class="form-group">
+                                    <label th:text="#{label.stars}"></label>
+                                    <input th:value="${item!=null?item.stars:''}" type="text" class="form-control" name="item_stars">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleFormControlSelect1" th:text="#{label.inTopPage}"></label>
+                                    <select class="form-control" id="exampleFormControlSelect1" name="item_inTopPage">
+                                        <option th:text="${item!=null?(item.inTopPage!=false?'YES':'NO'):'NO'}"></option>
+                                        <option th:text="${item!=null?(item.inTopPage!=true?'YES':'NO'):'YES'}"></option>
+                                    </select>
+                                </div>
+                                <div class="form-inline">
+                                     <input class="btn btn-success" type="submit" th:value="#{button.saveitem}">
+                                    <a class="btn btn-danger ml-auto" th:href="@{/delete/{id}(id=${item.id})}" th:text="#{button.delete}"></a>
+                                </div>
+                            </form>
+                        </div>
+<!--                        <div class="col-4 mb-4" th:object="${item}">-->
+<!--                            <div class="card" style="width: 51rem;">-->
+<!--                                <img th:src="${item.smallPicUrl}" height="450px" class="card-img-top">-->
+<!--                                <div class="card-body">-->
+<!--&lt;!&ndash;                                    <h5 class="card-title" th:text="${i.name}"></h5>&ndash;&gt;-->
+<!--                                    <a th:href="@{details/edit/{id}(id=${item.id})}" class="card-title">-->
+<!--                                        <span th:text="${item.name}"></span>-->
+<!--                                    </a>-->
+<!--                                    <h5 class="card-text" th:text="${'$'+item.price}"></h5>-->
+<!--                                    <p class="card-text" th:text="${item.description}"></p>-->
+<!--                                </div>-->
+<!--                                <div class="card-footer">-->
+<!--                                    <span class="stars" th:text="${item.stars}"></span>-->
+<!--&lt;!&ndash;                                    <span th:each="star:${#numbers.sequence(0,i.stars)}"></span>&ndash;&gt;-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+                    </div>
+                </div>
+        </div>
+    </div>
+</html>

@@ -1,0 +1,143 @@
+<html xmlns:th = "http://www.thymeleaf.org"
+      xmlns:layout = "http://ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/main.html"
+      xmlns:sec = "http://www.thymeleaf.org/extras/spring-security">
+
+    <div layout:fragment="site_content">
+                <div>
+                        <div class="mb-4" th:object="${item}">
+                            <div class="card">
+                                <img th:src="${item.largePicUrl}" height="450px" class="card-img-top">
+                                <div class="card-body">
+<!--                                    <h5 class="card-title" th:text="${i.name}"></h5>-->
+                                    <a th:href="@{/details/{id}/edit/{id}(id=${item.id})}" class="card-title">
+                                        <span th:text="${item.name}"></span>
+                                    </a>
+                                    <h5 class="card-text" th:text="${'$'+item.price}"></h5>
+                                    <p class="card-text" th:text="${item.description}"></p>
+                                    <h6>
+                                        <span th:text="#{label.brand}"></span>
+                                        <a href="" th:text="${item.brand.name} + ', ' + ${item.brand.country.name}"></a>
+                                    </h6>
+                                    <h5 class="text-center" th:text="#{label.screenshot}"></h5>
+                                    <div class="row">
+                                        <div class="col-2" th:each="pic : ${pictures}">
+                                            <img th:src="@{'/viewsmallpic/'+${pic.url}}" style="height: 100px; width: 100px;">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <img class="card-img-top" src="/starFillpng.png" style="width: 20px;height: 20px; margin-left: 2px; margin-top: 0px;" th:each="i:${#numbers.sequence(0,item.getStars()-1,1)}">
+                                    <img class="card-img-top" src="/starEmpty.png" style="width: 20px;height: 20px; margin-right: 2px; margin-top: 0px;" th:each="i:${#numbers.sequence(0,5 - (item.getStars())-1,1)}">
+                                </div>
+                            </div>
+                            <div>
+                                <a th:href="'/addToBasket/' + ${item.id} " class="btn btn-success mt-3" th:text="#{button.addtocart}"></a>
+                            </div>
+                            <div class="alert alert-success mt-4" role="alert" th:text="${successProfile}" th:if="${successProfile}"></div>
+<!-- add Comment-->
+                            <form class="mt-3" th:action="@{'/addComment'}" sec:authorize="isAuthenticated()" method="post">
+                                <label for="exampleFormControlTextarea1" class="form-label" th:text="#{label.comments}"></label>
+                                <input type="hidden" th:value="${item.id}" name="itemId">
+                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="text"></textarea>
+                                <button type="submit" class="btn btn-sm btn-primary mt-2 float-right" th:text="#{button.addcomment}"></button>
+                            </form>
+<!-- login jasagan userdin komment-->
+                            <div class="mt-5">
+                                <div sec:authorize="isAuthenticated()" class="card" th:each="c : ${comments}" th:if="${currentUser.getId() == c.author.getId()}">
+                                    <div class="card-body pr-2">
+                                        <div class="row">
+                                            <div class="col-8">
+                                                <h3 th:text="${c.author.fullName}"></h3>
+                                                <p class="card-text" th:text="${c.comment}"></p>
+<!--                                                <p class="card-text" th:text="${c.author.id}"></p>-->
+<!--                                                <p class="card-text" th:text="${currentUser.id}"></p>-->
+                                            </div>
+                                            <div class="col-4">
+                                                <p class="card-text" th:text="${c.addedDate}"></p>
+                                                <div class="row ml-5 pl-3">
+                                                    <div class="col px-0">
+                                                        <button type="button" class="btn float-right mr-1" style="background-color: #2e5f47; color: white;" data-toggle="modal" data-target="#addCountry">
+                                                            <span>
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+  <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+  <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+</svg>
+                                                            </span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="col pl-0 mr-0">
+                                                        <form th:action="@{'/deletecom'}" method="post">
+                                                            <input type="hidden" th:value="${item.id}" name="itemId">
+                                                            <input type="hidden" th:value="${c.id}" name="id">
+                                                            <button type="submit" class="btn btn-danger">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                                                                    <path fill-rule="evenodd" d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z"/>
+                                                                </svg>
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                                <div class="modal fade" id="addCountry" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <form th:action="@{'/editcomment'}" method="post">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="exampleModalLabel" th:text="#{label.modalNameEdit}"></h5>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <div class="form-group">
+                                                                        <input type="hidden" th:value="${c.id}" name="id">
+                                                                        <input type="hidden" th:value="${item.id}" name="itemId">
+                                                                        <input type="text" class="form-control" name="comment" th:value="${c.comment}">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" th:text="#{label.close}"></button>
+
+                                                                    <button type="submit" class="btn btn-primary" th:text="#{label.add}"></button>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+<!-- baska usserlardyn komment-->
+                                <div sec:authorize="isAuthenticated()" class="card" th:each="c : ${comments}" th:if="${currentUser.getId() != null && currentUser.getId() != c.author.getId()}">
+                                    <div class="card-body pr-2">
+                                        <div class="row">
+                                            <div class="col-8">
+                                                <h3 th:text="${c.author.fullName}"></h3>
+                                                <p class="card-text" th:text="${c.comment}"></p>
+                                            </div>
+                                            <div class="col-4">
+                                                <p class="card-text" th:text="${c.addedDate}"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+<!-- login jasamagan kezdegi komment-->
+                                <div sec:authorize="isAnonymous()" class="card" th:each="c : ${comments}">
+                                    <div class="card-body pr-2">
+                                        <div class="row">
+                                            <div class="col-8">
+                                                <h3 th:text="${c.author.fullName}"></h3>
+                                                <p class="card-text" th:text="${c.comment}"></p>
+                                            </div>
+                                            <div class="col-4">
+                                                <p class="card-text" th:text="${c.addedDate}"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+        </div>
+    </div>
+</html>

@@ -1,0 +1,134 @@
+<html xmlns:th = "http://www.thymeleaf.org"
+      xmlns:layout = "http://ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/main.html">
+
+    <div layout:fragment="site_content">
+        <div class="row mt-4">
+            <ul class="col sm-12">
+                <form th:action="@{'/search'}" class="form-group">
+                    <div class="row">
+                        <div class="col-10">
+                            <input type="text" class="form-control" placeholder="Search..." name="search_value" required>
+                            <input type="hidden" id="isAsc" class="form-control" name="isAsc" th:value="'true'">
+
+                            <!--                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">-->
+                            <!--                                    <span aria-hidden="true">&times;</span>-->
+                            <!--                                </button>-->
+                        </div>
+                        <div class="col-2">
+                            <button type="submit" class="btn btn-success" style="color: rgba(11,129,3,0.89); min-width: 100% "><span style="color: white" th:text="#{button.search}"></span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </ul>
+        </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="mb-4" th:object="${item}">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h2 th:text="#{label.basket}"></h2>
+                                    </div>
+                                    <div class="card-body">
+                                        <table class="table table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th width="40%" th:text="#{label.item}"></th>
+                                                <th width="20%" th:text="#{label.price}"></th>
+                                                <th width="20%" th:text="#{label.amount}"></th>
+                                                <th></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:each="key:${items.entrySet()}">
+                                                <td th:text="${key.getKey().name}"></td>
+                                                <td th:text="${key.getKey().price}"></td>
+                                                <td th:text="${key.getValue()}"></td>
+                                                <td>
+                                                    <a th:href="'/addToBasket/'+${key.getKey().getId()}" class="btn btn-success btn">+</a>
+                                                    <a th:href="'/deleteFromBasket/'+ ${key.getKey().getId()}" class="btn btn-danger btn">-</a>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+
+                                        <div class="row">
+                                            <div class="col-6">
+                                                Total: <span><b>$</b> <b th:text="${tot}"></b> </span>
+                                            </div>
+                                            <div class="col-6">
+                                                <a th:href="'/clearBasket'" class="btn btn-danger float-right" th:text="#{button.clearbasket}" >
+                                                </a>
+                                                <button type="button" class="btn btn-info float-right mr-2" data-toggle="modal" data-target="#exampleModal" th:text="#{button.checkin}">
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+        <div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="ml-2">
+                            <img src="http://news.indiglamour.com/wp-content/uploads/2014/10/Apple-Pay1.png" width="40" height="40" alt="">
+                        </div>
+                        <div class="ml-2">
+                            <img src="https://im0-tub-kz.yandex.net/i?id=4c07d077443f79f4214e2578654fbeb0&n=13"  width="40" height="40" alt="">
+                        </div>
+                        <div class="ml-2">
+                            <img src="https://im0-tub-kz.yandex.net/i?id=fd5b50919607a87464b02207a53d75a1&n=13"  width="40" height="40"alt="">
+                        </div>
+                        <div class="ml-2">
+                            <img src="https://bataille.online/wp-content/uploads/2019/10/mastercard-2@4x.png"  width="40" height="40" alt="">
+                        </div>
+                        <div class="ml-2">
+                            <img src="https://banner2.cleanpng.com/20180622/ulz/kisspng-american-express-merchant-services-nyse-axp-busine-merica-5b2cd8d28ca4e6.2120456315296657465761.jpg"  width="40" height="40"alt="">
+                        </div>
+
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form th:action="@{'/purchaseItem'}">
+                            <div class="form-group">
+                                <label th:text="#{label.fullname}" ><span style="color: red">*</span></label>
+                                <input type="text" name="full_name" class="form-control" th:placeholder="#{label.fullname2}" required>
+                            </div>
+                            <div class="form-group">
+                                <label th:text="#{label.cardnumber}"><span style="color: red">*</span></label>
+                                <input type="number" name="card_number" class="form-control" placeholder="1111 2222 3333 4444">
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label th:text="#{label.exp}"><span style="color: red">*</span></label>
+                                        <input type="text" name="expiration" class="form-control" placeholder="07/23">
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label>CVV <span style="color: red">*</span></label>
+                                        <input type="number" name="cvv" class="form-control" placeholder="777">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr class="my-4">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" th:text="#{label.close}"></button>
+                            <button type="submit" class="btn btn-success" th:text="#{button.pay}"></button>
+                        </form>
+                    </div>
+                    <!--                <div class="modal-footer">-->
+                    <!--                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
+                    <!--                    <button type="button" class="btn btn-primary">Save changes</button>-->
+                    <!--                </div>-->
+                </div>
+            </div>
+        </div>
+                </div>
+</html>

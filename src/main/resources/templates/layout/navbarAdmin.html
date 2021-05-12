@@ -1,0 +1,24 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" xmlns:th = "http://www.thymeleaf.org" xmlns:sec = "http://www.thymeleaf.org/extras/spring-security">
+    <div class="container">
+        <a class="navbar-brand" sec:authorize="isAuthenticated()" th:href="@{'/'}">ALL E-SHOP</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"> MANAGER TOOLS</span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="?lng=ru"><img src="https://upload.wikimedia.org/wikipedia/en/f/f3/Flag_of_Russia.svg" style="width: 20px; height: 20px;"> RUS</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="?lng=en"><img src="https://upload.wikimedia.org/wikipedia/en/b/be/Flag_of_England.svg" style="width: 20px; height: 20px;"> ENG</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="?lng=kz"><img src="https://upload.wikimedia.org/wikipedia/commons/d/d3/Flag_of_Kazakhstan.svg" style="width: 20px; height: 14px;"> KAZ</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link ml-5" th:href="@{'/'}" th:text="#{label.main}"></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

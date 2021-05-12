@@ -1,0 +1,64 @@
+<html xmlns:th = "http://www.thymeleaf.org"
+      xmlns:layout = "http://ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/main.html">
+
+    <div layout:fragment="site_content">
+                    <div class="row">
+                        <div class="col-6 offset-3">
+                            <div class="alert alert-success mt-4" role="alert" th:text="${successProfile}" th:if="${successProfile}"></div>
+                            <div class="row my-3">
+                                <div class="col-6 offset-3">
+                                    <img class="rounded-circle" th:src="@{'/viewphoto/'+${user.pictureUrl}}" style="width: 160px; height: 160px;">
+                                </div>
+                            </div>
+                            <form class="mb-5" th:action="@{'/uploadavatar'}" method="post" enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="customFile" name="user_ava">
+                                        <label class="custom-file-label" for="customFile" th:text="#{button.chooseFile}"></label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-info float-right" style="background-color: #2e5f47" th:text="#{button.uploadFile}"></button>
+                                </div>
+                            </form>
+                            <form class="mb-5" th:action="@{'/updateprofile'}" method="post">
+                                <div class="form-group">
+                                    <input th:value="${user!=null?user.id:''}" type="hidden" name="id">
+                                    <label th:text="#{label.email}"></label>
+                                    <input type="email" required class="form-control" name="email" readonly
+                                           th:value="${user.email}">
+                                </div>
+                                <div class="form-group">
+                                    <label th:text="#{label.fullname}"></label>
+                                    <input type="text" required class="form-control" name="full_name"
+                                           th:value="${user.fullName}">
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-info float-right" style="background-color: #2e5f47" th:text="#{button.updateProfile}"></button>
+                                </div>
+                            </form>
+
+                            <div class="alert alert-success mt-4" role="alert" th:text="${success}" th:if="${success}"></div>
+                            <div class="alert alert-danger mt-4" role="alert" th:text="${error}" th:if="${error}"></div>
+                            <form th:action="@{'/updatepassword'}" method="post">
+                                <div class="form-group">
+                                    <input th:value="${user!=null?user.id:''}" type="hidden" name="id">
+                                    <label th:text="#{label.oldPass}"></label>
+                                    <input type="password" required class="form-control" name="old_password" th:placeholder="#{label.oldPass2}">
+                                </div>
+                                <div class="form-group">
+                                    <label th:text="#{label.newPass}"></label>
+                                    <input type="password" required class="form-control" name="new_password" th:placeholder="#{label.newPass2}">
+                                </div>
+                                <div class="form-group">
+                                    <label th:text="#{label.newRePass}"></label>
+                                    <input type="password" required class="form-control" name="re_new_password" th:placeholder="#{label.newRePass2}">
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-info float-right" style="background-color: #2e5f47" th:text="#{button.updatePass}"></button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+</html>

@@ -1,0 +1,79 @@
+<html xmlns:th = "http://www.thymeleaf.org"
+      xmlns:layout = "http://ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/main.html">
+
+    <div layout:fragment="site_content">
+
+                <div>
+                    <form th:action="@{'/search'}" method="get">
+                    <div class="row mb-3">
+                        <div class="col-3">
+                                <div class="form-group">
+                                    <label th:text="#{label.name}"></label>
+                                    <input th:value="${items!=null?name2:''}" type="text" class="form-control" name="item_name">
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label th:text="#{label.brands}"></label>
+                                    <select class="form-control" name="brand_id">
+                                        <option th:each="br : ${brands}" th:text="${br.name}" th:value="${br.id}" th:selected="${brandId==br.id}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="form-group">
+                                    <label th:text="#{label.priceFrom}"></label>
+                                    <input th:value="${items!=null?priceFrom:''}" type="number" step="0.01" class="form-control" name="item_price_from">
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="form-group">
+                                    <label th:text="#{label.priceTo}"></label>
+                                    <input th:value="${items!=null?priceTo:''}" type="number" step="0.01"  class="form-control" name="item_price_to">
+                                </div>
+                            </div>
+                            <div class="col-2 pt-2">
+                                <div class="form-group">
+                                    <button class="btn mt-4" style="background-color: #2e5f47; color: white; width: 110px" th:text="#{button.search}"></button>
+                                </div>
+                            </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-5">
+                            <h3 th:text="#{label.sResult}"></h3>
+                        </div>
+                        <div class="col ml-5 pr-0 pl-5">
+                            <label class="ml-5" th:text="#{label.orderByPrice}"></label>
+                            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                <label class="btn btn-secondary">
+                                        <input type="radio" name="options" value="asc" checked th:text="#{label.asc}">
+                                </label>
+                                <label class="btn btn-secondary">
+                                        <input type="radio" name="options" value="desc" th:text="#{label.dec}">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    </form>
+                    <div class="row">
+                        <div class="col-4 mb-4" th:each="i : ${items}">
+                            <div class="card" style="width: 16rem;">
+                                <img th:src="${i.smallPicUrl}" height="125px" class="card-img-top">
+                                <div class="card-body">
+                                    <!--                                    <h5 class="card-title" th:text="${i.name}"></h5>-->
+                                    <a th:href="@{details/{id}(id=${i.id})}" class="card-title">
+                                        <span th:text="${i.name}"></span>
+                                    </a>
+                                    <h5 class="card-text" th:text="${'$'+i.price}"></h5>
+                                    <p class="card-text" th:text="${i.description}"></p>
+                                </div>
+                                <div class="card-footer">
+                                    <img class="card-img-top" src="/starFillpng.png" style="width: 15px;height: 15px; margin-left: 2px; margin-top: 0px;" th:each="i:${#numbers.sequence(0,i.getStars()-1,1)}">
+                                    <img class="card-img-top" src="/starEmpty.png" style="width: 15px;height: 15px; margin-right: 2px; margin-top: 0px;" th:each="i:${#numbers.sequence(0,5 - (i.getStars())-1,1)}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+</html>

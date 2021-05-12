@@ -1,0 +1,98 @@
+<html xmlns:th = "http://www.thymeleaf.org"
+      xmlns:layout = "http://ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/mainAdmin.html">
+
+    <div layout:fragment="admin_content">
+                    <div class="row">
+                        <div class="col-sm-6 offset-3">
+                            <form th:action="@{'/saveuser'}" method="post">
+                                <div class="form-group">
+                                    <input th:value="${user!=null?user.id:''}" type="hidden" id="custId" name="id">
+                                    <label th:text="#{label.email2}"></label>
+                                    <input th:value="${user!=null?user.email:''}" type="text" class="form-control" name="email">
+                                </div>
+                                <div class="form-group">
+                                    <label th:text="#{label.fullname2}"></label>
+                                    <input th:value="${user!=null?user.fullName:''}" type="text" class="form-control" name="full_name">
+                                </div>
+                                <div class="form-inline">
+                                    <input class="btn btn-success" type="submit" th:value="#{button.saveitem}">
+                                    <!-- Button trigger modal -->
+                                    <button type="button" class="btn btn-danger ml-auto" data-toggle="modal" data-target="#staticBackdrop" th:text="#{button.delete}">
+                                    </button>
+                                </div>
+                            </form>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <form th:action="${'/deleteuser'}" method="post">
+                                        <input th:value="${user!=null?user.id:''}" type="hidden" name="id">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <h5 th:text="#{message.confirm}"></h5>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal" th:text="#{label.close}"></button>
+                                                <button class="btn btn-danger" th:text="#{button.delete}"></button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+<!--                        <div class="row mt-4">-->
+<!--                            <div class="col-sm-6 offset-3">-->
+<!--                                <table class="table">-->
+<!--                                    <tbody>-->
+<!--                                        <tr th:each=" cat : ${categories}">-->
+<!--                                            <form th:action="${'/assigncategory'}" method="post">-->
+<!--                                                <input type="hidden" th:value="${item.id}" th:name="item_id">-->
+<!--                                                <input type="hidden" th:value="${cat.id}" th:name="category_id">-->
+<!--                                                <td th:text="${cat.name}"></td>-->
+<!--                                                <td width="10%">-->
+<!--                                                    <button class="btn btn-success btn-sm">+</button>-->
+<!--                                                </td>-->
+<!--                                            </form>-->
+<!--                                        </tr>-->
+<!--                                    </tbody>-->
+<!--                                </table>-->
+<!--                            </div>-->
+<!--                        </div>-->
+        <div class="row mt-4">
+            <div class="col-sm-6 offset-3">
+                <table class="table">
+                    <tbody>
+                    <tr th:each=" r : ${user.roles}">
+                        <form th:action="${'/minusrole'}" method="post">
+                            <input type="hidden" th:value="${user.id}" th:name="user_id">
+                            <input type="hidden" th:value="${r.id}" th:name="role_id">
+                            <td th:text="${r.role}"></td>
+                            <td width="10%">
+                                <button class="btn btn-danger btn-sm">-</button>
+                            </td>
+                        </form>
+                    </tr>
+                    <tr th:each=" r : ${roles}" th:if="${!user.roles.contains(r)}">
+                        <form th:action="${'/assignrole'}" method="post">
+                            <input type="hidden" th:value="${user.id}" th:name="user_id">
+                            <input type="hidden" th:value="${r.id}" th:name="role_id">
+                            <td th:text="${r.role}"></td>
+                            <td width="10%">
+                                <button class="btn btn-success btn-sm">+</button>
+                            </td>
+                        </form>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+                    </div>
+</html>

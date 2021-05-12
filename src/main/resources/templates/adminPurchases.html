@@ -1,0 +1,33 @@
+<html xmlns:th = "http://www.thymeleaf.org"
+      xmlns:layout = "http://ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/mainAdmin.html">
+
+<div layout:fragment="admin_content">
+                    <div class="row">
+                        <div class="col-8">
+                            <h1 th:text="#{label.purchase}"></h1>
+                        </div>
+                    </div>
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th th:text="#{label.fullname2}"></th>
+                            <th th:text="#{label.item}"></th>
+                            <th th:text="#{label.price2}"></th>
+                            <th th:text="#{label.buyingdate}"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="pur:${purchases}">
+                            <td th:text="${pur.id}"></td>
+                            <td th:text="${pur.fullName}"></td>
+                            <td th:text="${pur.shopItem.name}"></td>
+                            <td th:text="${pur.shopItem.price}"></td>
+                            <td th:text="${pur.date}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+</html>

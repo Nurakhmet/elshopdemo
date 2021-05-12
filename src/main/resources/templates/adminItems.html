@@ -1,0 +1,108 @@
+<html xmlns:th = "http://www.thymeleaf.org"
+      xmlns:layout = "http://ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/mainAdmin.html">
+
+<div layout:fragment="admin_content">
+                    <div class="row">
+                        <div class="col-8">
+                            <h1 th:text="#{label.item}"></h1>
+                        </div>
+                        <div class="col-4">
+                            <button type="button" class="btn float-right" style="background-color: #2e5f47; color: white" data-toggle="modal" data-target="#exampleModal">
+                                <span th:text="#{button.additem}"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th th:text="#{label.name}"></th>
+                            <th th:text="#{label.description}"></th>
+                            <th th:text="#{label.price}"></th>
+                            <th th:text="#{label.stars}"></th>
+                            <th th:text="#{label.inTopPage}"></th>
+                            <th th:text="#{label.operations}"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="it : ${items}">
+                            <th th:text="${it.id}"></th>
+                            <td th:text="${it.name}"></td>
+                            <td th:text="${it.description}"></td>
+                            <td th:text="${it.price}"></td>
+                            <td th:text="${it.stars}"></td>
+                            <td>
+                                <span th:each="cat : ${it.categories}" th:text="${cat.name}" style="display: block;"></span>
+                            </td>
+                            <td>
+                                <a th:href="@{/editItem/{id}(id=${it.id})}" class="btn btn-info btn-sm" th:text="#{button.edit}"></a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+    <form th:action="@{'/additems'}" method="post">
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel" th:text="#{label.modalName}"></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+
+                            <label th:text="#{label.name}">
+                            </label>
+                            <input type="text" class="form-control" name="item_name">
+                        </div>
+                        <div class="form-group">
+                            <label th:text="#{label.description}"></label>
+                            <textarea class="form-control" style="min-width: 100%" rows="5" name="item_description"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label th:text="#{label.price}"></label>
+                            <input type="number" step="0.01" class="form-control" name="item_price">
+                        </div>
+                        <div class="form-group">
+                            <label th:text="#{label.largePicUrl}"></label>
+                            <input type="text" class="form-control" name="item_large_pic_url">
+                        </div>
+                        <div class="form-group">
+                            <label th:text="#{label.smallPicUrl}"></label>
+                            <input type="text" class="form-control" name="item_small_pic_url">
+                        </div>
+                        <div class="form-group">
+                            <label th:text="#{label.stars}"></label>
+                            <input type="number" class="form-control" name="item_stars">
+                        </div>
+                        <div class="form-group">
+                            <label th:text="#{label.brands}"></label>
+                            <select class="form-control" name="country_id">
+                                <option th:each="br : ${brands}" th:text="${br.name} + ' / ' + ${br.country.name}" th:value="${br.id}"></option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label th:text="#{label.inTopPage}"></label>
+                            <select class="form-control" name="item_inTopPage">
+                                <option th:text="#{label.Yes}"></option>
+                                <option th:text="#{label.No}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" th:text="#{label.close}"></button>
+
+                        <button type="submit" class="btn btn-primary" th:text="#{label.additem}"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+                </div>
+
+            <!-- Modal -->
+
+
+</html>
